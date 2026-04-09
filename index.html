@@ -14,6 +14,36 @@
   --border-soft:#c7d6ea;
   --radius:14px;
 }
+/* ===== ADMIN RESPONSIVE (MÓVIL) ===== */
+@media (max-width: 900px) {
+
+  .box {
+    padding: 16px;
+    margin: 90px 12px;
+  }
+
+  #tablaAdmin {
+    display: block;
+    overflow-x: auto;
+    white-space: nowrap;
+  }
+
+  #tablaAdmin table {
+    min-width: 1200px;
+  }
+
+  #tablaAdmin th,
+  #tablaAdmin td {
+    font-size: 12px;
+    padding: 6px;
+  }
+
+  #tablaAdmin td button {
+    font-size: 12px;
+    padding: 4px 8px;
+  }
+}
+
 body{
   font-family:Arial, Helvetica, sans-serif;
   background:var(--bg-soft);
