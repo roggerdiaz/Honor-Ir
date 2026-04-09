@@ -234,7 +234,7 @@ th{background:#0078d4;color:white}
 <p style="margin-top:-10px;color:#6b7280;font-size:13px">
   Registros de Inyección
 </p>
-``
+
   <button onclick="descargarExcel()">Descargar Excel</button>
   <table id="tablaAdmin">
 
@@ -418,7 +418,7 @@ function cargarTablaAdmin(){
     `;
   });
 }
-``
+
 
 function descargarExcel(){
   let csv="Fecha,EDC,Regional,Canal,Cliente,Total,Detalle\n";
@@ -461,8 +461,8 @@ function borrarRegistro(index){
   localStorage.setItem("registrosHonor", JSON.stringify(data));
   cargarTablaAdmin(); // refresca la tabla
 }
-``
+
 </script>
 </body>
 </html>
-``
+
