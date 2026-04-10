@@ -264,7 +264,7 @@ th{background:#0078d4;color:white}
 </div>
 
 <script>
-/* ===== USUARIOS ===== */
+<script>
 const usuarios = {
   admin:"081065",
   "Daniel Vanoy":"6505","Diana Pardo":"2553","Marcela Huertas":"6277",
@@ -286,11 +286,9 @@ const referenciasPorCanal = {
   TOYAR:["H400 Smart +12","Honor Play 9A 128GB"]
 };
 
-const accesoriosEco = [
-  "Honor Headphone","Honor OWS","Honor Clip","Airfryer"
-];
+const accesoriosEco = ["Honor Headphone","Honor OWS","Honor Clip","Airfryer"];
 
-/* ===== LOGIN ===== */
+/* LOGIN */
 function login(){
   if(!usuarios[usuario.value] || usuarios[usuario.value] !== clave.value){
     errorLogin.style.display="block";
@@ -310,7 +308,7 @@ function login(){
   }
 }
 
-/* ===== REFERENCIAS ===== */
+/* REFERENCIAS */
 function cargarReferenciasPorCanal(){
   refsCanal.innerHTML="";
   refsAccesorios.innerHTML="";
@@ -332,14 +330,14 @@ function cargarReferenciasPorCanal(){
   });
 }
 
-/* ===== INVENTARIO ===== */
+/* INVENTARIO */
 function toggleInventario(){
   cantidadInventario.disabled = tieneInventario.value !== "Sí";
   if(tieneInventario.value !== "Sí") cantidadInventario.value = 0;
   actualizarResumen();
 }
 
-/* ===== RESUMEN ===== */
+/* RESUMEN */
 function actualizarResumen(){
   let total=0, detalle="";
   document.querySelectorAll("[data-ref]").forEach(i=>{
@@ -349,43 +347,31 @@ function actualizarResumen(){
     }
   });
 
-  textoResumen.value=
-`CONFIRMO INYECCIÓN
-Cliente: ${cliente.value}
-Canal: ${canal.value}
-Ciudad: ${ciudad.value}
-
-Referencias:
-${detalle}
-
-TOTAL: ${total}`;
+  textoResumen.value=`TOTAL: ${total}\n${detalle}`;
 }
 
-/* ===== GUARDAR ===== */
+/* GUARDAR */
 formEDC.addEventListener("submit",e=>{
   e.preventDefault();
 
   fetch("https://ir.infinityfreeapp.com/guardar.php",{
     method:"POST",
     headers:{ "Content-Type":"application/json" },
-body: JSON.stringify({
-  fecha: new Date().toLocaleString(),
-  edc: edc.value,
-  regional: regional.value,
-  canal: canal.value,
-  cliente: cliente.value,
-  ciudad: ciudad.value,
-  direccion: direccion.value,
-  dueno: dueno.value,
-  encargado: encargado.value,
-  telefono: telefono.value,
-  inventario: tieneInventario.value,
-  cantidadInventario: cantidadInventario.value,
-  total: [...document.querySelectorAll("[data-ref]")]
-          .reduce((s,i)=>s + Number(i.value || 0),0),
-  detalle: textoResumen.value
-})
-/* ===== ADMIN ===== */
+    body:JSON.stringify({
+      fecha:new Date().toLocaleString(),
+      edc:edc.value,
+      regional:regional.value,
+      canal:canal.value,
+      cliente:cliente.value,
+      ciudad:ciudad.value,
+      total:[...document.querySelectorAll("[data-ref]")]
+            .reduce((s,i)=>s+Number(i.value||0),0),
+      detalle:textoResumen.value
+    })
+  }).then(()=>alert("✅ Registro guardado"));
+});
+
+/* ADMIN */
 async function cargarTablaAdmin(){
   const data = await (await fetch("https://ir.infinityfreeapp.com/listar.php")).json();
   tablaAdmin.querySelector("tbody").innerHTML =
@@ -397,20 +383,7 @@ async function cargarTablaAdmin(){
         <td>${r.total}</td>
       </tr>`).join("");
 }
-  async function descargarExcel(){
-  const res = await fetch("https://ir.infinityfreeapp.com/listar.php");
-  const data = await res.json();
-
-  let csv = "Fecha,EDC,Cliente,Total\n";
-  data.forEach(r=>{
-    csv += `"${r.fecha}","${r.edc}","${r.cliente}","${r.total}"\n`;
-  });
-
-  const link = document.createElement("a");
-  link.href = URL.createObjectURL(new Blob([csv], { type: "text/csv" }));
-  link.download = "HONOR_Registros.csv";
-  link.click();
-}
+</script>
 </script>
 </body>
 </html>
