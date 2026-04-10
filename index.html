@@ -3,7 +3,6 @@
 <head>
 <meta charset="UTF-8">
 <title>HONOR – Registro de Ventas</title>
-
 <style>
 :root{
   --honor-blue:#0078d4;
@@ -14,137 +13,54 @@
   --border-soft:#c7d6ea;
   --radius:14px;
 }
-/* ===== ADMIN RESPONSIVE (MÓVIL) ===== */
-@media (max-width: 900px) {
-
-  .box {
-    padding: 16px;
-    margin: 90px 12px;
-  }
-
-  #tablaAdmin {
-    display: block;
-    overflow-x: auto;
-    white-space: nowrap;
-  }
-
-  #tablaAdmin table {
-    min-width: 1200px;
-  }
-
-  #tablaAdmin th,
-  #tablaAdmin td {
-    font-size: 12px;
-    padding: 6px;
-  }
-
-  #tablaAdmin td button {
-    font-size: 12px;
-    padding: 4px 8px;
-  }
-}
-
-body{
-  font-family:Arial, Helvetica, sans-serif;
-  background:var(--bg-soft);
-  margin:0;
-}
+body{ font-family:Arial, sans-serif; background:var(--bg-soft); margin:0; }
 .hidden{display:none!important}
 
 /* LOGIN */
 .login{
-  width:92%;
-  max-width:560px;
-  background:#ffffff;
-  padding:40px;
-  border-radius:14px;
-  box-shadow:0 25px 50px rgba(0,0,0,.15);
-  position:fixed;
-  inset:0;
-  margin:auto;
-  height:max-content;
+  width:92%; max-width:400px; background:#fff; padding:40px; border-radius:14px;
+  box-shadow:0 25px 50px rgba(0,0,0,.15); position:fixed; inset:0; margin:auto; height:max-content;
 }
 .honor-logo{text-align:center;font-size:36px;font-weight:bold;letter-spacing:6px;color:#0078d4;margin-bottom:6px}
 .honor-sub{text-align:center;font-size:14px;color:#6b7280;margin-bottom:26px}
 .login label{font-size:14px;font-weight:bold;display:block;margin-bottom:6px}
-.login input,.login select{
-  width:100%;height:48px;padding:10px 12px;margin-bottom:16px;
-  font-size:15px;border-radius:8px;border:1px solid #e5e7eb;background:#f8fbff;
-}
-.login button{
-  width:100%;height:50px;font-size:16px;font-weight:bold;
-  background:#0078d4;color:#fff;border:none;border-radius:8px;cursor:pointer
-}
-.error-msg{
-  display:none;background:#fee2e2;color:#dc2626;
-  padding:8px 12px;border-radius:8px;font-size:13px;margin-bottom:12px
-}
+.login input, .login select{ width:100%; height:44px; margin-bottom:16px; border-radius:8px; border:1px solid #ddd; padding:0 10px; }
+.login button{ width:100%; height:48px; background:#0078d4; color:#fff; border:none; border-radius:8px; cursor:pointer; font-weight:bold; }
 
 /* TOP BAR */
-.top-bar{position:absolute;top:24px;right:32px}
-.top-bar button{
-  padding:14px 24px;font-size:15px;font-weight:600;
-  border:none;border-radius:10px;cursor:pointer;color:white
-}
-.reset{background:#64748b;margin-right:10px}
-.logout{background:#0b5ca8}
+.top-bar{position:fixed; top:0; right:0; padding:15px; z-index:100}
+.top-bar button{ padding:10px 20px; border:none; border-radius:8px; cursor:pointer; color:white; font-weight:600; margin-left:10px}
+.reset{background:#64748b}
+.logout{background:#dc2626}
 
-/* EDC */
-.container{display:flex;gap:36px;padding:88px 48px 48px}
-.resumen{
-  width:340px;background:#fff;padding:24px;border-radius:14px;
-  box-shadow:0 25px 50px rgba(0,0,0,.12);display:flex;flex-direction:column
-}
-.resumen textarea{
-  flex:1;background:#eef3f9;border:1px solid var(--border-soft);
-  border-radius:10px;padding:14px;font-family:Courier New;font-size:14px;resize:none
-}
+/* CONTENEDOR PRINCIPAL */
+.container{display:flex; gap:20px; padding:80px 20px 20px; max-width:1200px; margin:auto}
+.resumen{ width:300px; background:#fff; padding:20px; border-radius:14px; position:sticky; top:80px; height:max-content; box-shadow:0 10px 20px rgba(0,0,0,0.1)}
+.resumen textarea{ width:100%; height:300px; border:1px solid #ddd; border-radius:8px; resize:none; padding:10px; font-family:monospace; font-size:13px; background:#f9f9f9}
 .main{flex:1}
-form{
-  background:#fff;padding:40px;border-radius:14px;
-  max-width:1050px;box-shadow:0 25px 50px rgba(0,0,0,.12)
-}
-.main label{font-size:14px;font-weight:700;margin-top:22px;display:block}
-.main input,.main select{
-  width:100%;height:48px;padding:10px 12px;font-size:15px;
-  border-radius:8px;border:1px solid var(--border-soft);
-  background:#eef3f9;margin-bottom:18px
-}
-.referencias{
-  display:grid;grid-template-columns:320px 140px;gap:12px;align-items:center
-}
-.referencias input{text-align:center}
-button[type="submit"]{
-  width:100%;height:50px;font-size:16px;font-weight:600;
-  background:#0078d4;color:white;border:none;border-radius:8px;cursor:pointer
-}
+form{ background:#fff; padding:30px; border-radius:14px; box-shadow:0 10px 20px rgba(0,0,0,0.1)}
+.main label{ font-weight:bold; display:block; margin-top:15px; font-size:14px}
+.main input, .main select{ width:100%; height:40px; border:1px solid #ccc; border-radius:6px; padding:0 10px; margin-top:5px; box-sizing:border-box}
 
-.resumen{
-  position: sticky;
-  top: 96px;              /* debajo del top-bar */
-  height: calc(100vh - 140px);
-  z-index: 5;
-}
+.referencias{ display:grid; grid-template-columns: 1fr 100px; gap:10px; align-items:center; margin-top:10px; padding-bottom:10px; border-bottom:1px solid #eee}
+.referencias input{ text-align:center; margin:0}
 
-.resumen textarea{
-  height: 100%;
-  overflow-y: auto;
-}
+button[type="submit"]{ width:100%; height:50px; background:#0078d4; color:white; border:none; border-radius:8px; margin-top:30px; cursor:pointer; font-weight:bold; font-size:16px}
 
 /* ADMIN */
-.box{
-  background:white;padding:40px;border-radius:14px;
-  max-width:1400px;margin:120px auto
+.box{ background:white; padding:40px; border-radius:14px; max-width:95%; margin:100px auto; overflow-x:auto}
+table{width:100%; border-collapse:collapse; margin-top:20px}
+th, td{ border:1px solid #ddd; padding:12px; text-align:left; font-size:14px}
+th{ background:#0078d4; color:white}
+
+@media (max-width: 800px) {
+  .container{ flex-direction: column-reverse; }
+  .resumen{ width: 100%; position: static; box-sizing: border-box;}
 }
-table{width:100%;border-collapse:collapse}
-th,td{border:1px solid #e5e7eb;padding:8px;font-size:13px}
-th{background:#0078d4;color:white}
 </style>
 </head>
-
 <body>
 
-<!-- LOGIN -->
 <div class="login" id="loginBox">
   <div class="honor-logo">HONOR</div>
   <div class="honor-sub">Colombia · Registro de Ventas</div>
@@ -166,247 +82,209 @@ th{background:#0078d4;color:white}
   </select>
   <label>Contraseña</label>
   <input type="password" id="clave">
-  <div class="error-msg" id="errorLogin">Credenciales incorrectas</div>
+  <div id="errorLogin" style="color:red; font-size:12px; display:none; margin-bottom:10px">Credenciales incorrectas</div>
   <button onclick="login()">Ingresar</button>
 </div>
 
-<!-- TOP -->
 <div class="top-bar hidden" id="topBar">
-  <button class="reset" onclick="limpiarFormulario()">Limpiar</button>
-  <button class="logout" onclick="salirMenu()">Salir</button>
+  <button class="reset" onclick="limpiarFormulario()">Limpiar Formulario</button>
+  <button class="logout" onclick="location.reload()">Cerrar Sesión</button>
 </div>
 
-<!-- VISTA EDC -->
 <div class="container hidden" id="vistaEDC">
-  <div class="resumen">
-    <h3>HONOR - IR</h3>
-<p style="margin:0 0 12px;font-size:13px;color:#6b7280">
-  Resumen copiable
-</p>
-    <textarea id="textoResumen" readonly></textarea>
-  </div>
   <div class="main">
-   <form
-  id="formEDC"
-  action="http://ir.infinityfreeapp.com/guardar.php"
-  method="POST"
->
+    <form id="formEDC">
+      <h2 style="margin-top:0">Registro de Venta</h2>
       <label>EDC</label><input id="edc" readonly>
       <label>Regional</label><input id="regional" readonly>
       <label>Ciudad</label><input id="ciudad" required>
       <label>Dirección</label><input id="direccion" required>
       <label>Canal</label>
-      <select id="canal" onchange="cargarReferenciasPorCanal();actualizarResumen()">
+      <select id="canal" onchange="cargarReferenciasPorCanal();actualizarResumen()" required>
         <option value="">Seleccione Canal</option>
         <option>COMQUIA</option>
         <option>TOYAR</option>
       </select>
-<label>Cliente</label>
-<input id="cliente" oninput="actualizarResumen()" required>
+      <label>Cliente</label><input id="cliente" oninput="actualizarResumen()" required>
+      <label>Dueño del Punto</label><input id="dueno" required>
+      <label>Encargado</label><input id="encargado" required>
+      <label>Teléfono</label><input id="telefono" type="tel" pattern="[0-9]{10}" required placeholder="3001234567">
+      
+      <label>¿Cuenta con Inventario?</label>
+      <select id="tieneInventario" onchange="toggleInventario()" required>
+        <option value="No">No</option>
+        <option value="Sí">Sí</option>
+      </select>
+      <label>Cantidad en Inventario</label>
+      <input type="number" id="cantidadInventario" value="0" disabled>
 
-<label>Dueño del Punto</label>
-<input id="dueno" required>
-
-<label>Encargado</label>
-<input id="encargado" required>
-
-<label>Teléfono (Colombia)</label>
-<input id="telefono" required pattern="[0-9]{10}">
-
-<label>¿Cuenta con Inventario?</label>
-<select id="tieneInventario" onchange="toggleInventario()" required>
-  <option value="">Seleccione</option>
-  <option value="Sí">Sí</option>
-  <option value="No">No</option>
-</select>
-
-<label>Cantidad de Inventario</label>
-<input type="number" id="cantidadInventario" value="0" disabled>
-
-      <label>Referencias</label>
+      <h3>Referencias de Venta</h3>
       <div id="refsCanal"></div>
       <h3>Accesorios y ECO</h3>
       <div id="refsAccesorios"></div>
-      <button type="submit">Guardar Registro</button>
+      
+      <button type="submit" id="btnGuardar">Guardar Registro</button>
     </form>
+  </div>
+
+  <div class="resumen">
+    <h3>Resumen</h3>
+    <textarea id="textoResumen" readonly placeholder="Aquí aparecerá el detalle de tu venta..."></textarea>
   </div>
 </div>
 
-/* ===== DESCARGAR EXCEL ===== */
+<div class="box hidden" id="vistaAdmin">
+  <h2 style="margin-top:0">Panel de Administración</h2>
+  <button onclick="descargarExcel()" style="padding:10px 20px; background:#107c10; color:white; border:none; border-radius:5px; cursor:pointer">📥 Descargar Excel (CSV)</button>
+  <button onclick="cargarTablaAdmin()" style="padding:10px 20px; background:#0078d4; color:white; border:none; border-radius:5px; cursor:pointer">🔄 Actualizar Tabla</button>
+  
+  <div id="tablaAdminContenedor">
+    <table>
+      <thead>
+        <tr>
+          <th>Fecha</th>
+          <th>EDC</th>
+          <th>Cliente</th>
+          <th>Ciudad</th>
+          <th>Total</th>
+        </tr>
+      </thead>
+      <tbody id="cuerpoTablaAdmin"></tbody>
+    </table>
+  </div>
+</div>
+
+<script>
+/* DATOS */
+const usuarios = { admin:"081065", "Daniel Vanoy":"6505","Diana Pardo":"2553","Marcela Huertas":"6277","Hector Guerrero":"8882","Vanessa Sarmiento":"9428","Viviana Mora":"4784","Jhonatan Romero":"5154","Mauricio Lazo":"7474","Jose Valencia":"5958","Jose Lujan":"2996","Vivián Avellaneda":"2087" };
+const region = { "Daniel Vanoy":"Center 1","Diana Pardo":"Center 2","Marcela Huertas":"Center 3","Hector Guerrero":"Coast 1","Vanessa Sarmiento":"Coast 2","Viviana Mora":"Coffee & West 1","Jhonatan Romero":"Coffee & West 2","Mauricio Lazo":"Coffee & West 3","Jose Valencia":"East 1","Jose Lujan":"East 2","Vivián Avellaneda":"East 3" };
+
+const referenciasPorCanal = {
+  COMQUIA: ["H400 Smart + 6","H400 Smart +12","Honor 200 Smart","Honor Magic 7 Lite 256Gb","Honor Magic 7 Lite 512Gb","Honor Magic 8 Lite 256Gb","Honor Pad X8A 128GB","Honor Play 9A 64GB","Honor Play 9C 256GB","Honor X5B 128GB","Honor X5B Plus","HONOR X5C 128GB","HONOR X5C 64GB","HONOR X6B 128GB","Honor X6B 256GB","HONOR X6C 128GB","Honor X6C 256GB","HONOR X7D","HONOR X8C 512GB","Honor X8D 512GB","X6C 256 SS"],
+  TOYAR: ["H400 Smart +12","Honor Play 9A 128GB","HONOR X5C 64GB","HONOR X6C 128GB","Honor X6C 256GB","HONOR X8C 512GB","Honor X8D 512GB","Honor X9C Smart 256GB"]
+};
+const accesoriosEco = ["Honor Headphone","Honor OWS","Honor Clip","Airfryer","Cleaner Rob vaccum","Earbuds X7e","Scooter","Watch 2i"];
+
+/* LÓGICA */
+function login(){
+  const user = document.getElementById("usuario").value;
+  const pass = document.getElementById("clave").value;
+  if(!usuarios[user] || usuarios[user] !== pass){
+    document.getElementById("errorLogin").style.display="block";
+    return;
+  }
+  document.getElementById("loginBox").classList.add("hidden");
+  document.getElementById("topBar").classList.remove("hidden");
+
+  if(user === "admin"){
+    document.getElementById("vistaAdmin").classList.remove("hidden");
+    cargarTablaAdmin();
+  } else {
+    document.getElementById("vistaEDC").classList.remove("hidden");
+    document.getElementById("edc").value = user;
+    document.getElementById("regional").value = region[user];
+  }
+}
+
+function cargarReferenciasPorCanal(){
+  const canal = document.getElementById("canal").value;
+  const divRefs = document.getElementById("refsCanal");
+  const divAccs = document.getElementById("refsAccesorios");
+  divRefs.innerHTML = ""; divAccs.innerHTML = "";
+
+  (referenciasPorCanal[canal] || []).forEach(r => {
+    divRefs.innerHTML += `<div class="referencias"><span>${r}</span><input type="number" min="0" data-ref="${r}" oninput="actualizarResumen()"></div>`;
+  });
+  accesoriosEco.forEach(r => {
+    divAccs.innerHTML += `<div class="referencias"><span>${r}</span><input type="number" min="0" data-ref="${r}" oninput="actualizarResumen()"></div>`;
+  });
+}
+
+function toggleInventario(){
+  const select = document.getElementById("tieneInventario");
+  const input = document.getElementById("cantidadInventario");
+  input.disabled = (select.value !== "Sí");
+  if(input.disabled) input.value = 0;
+}
+
+function actualizarResumen(){
+  let total = 0, detalle = "";
+  document.querySelectorAll("[data-ref]").forEach(i => {
+    if(i.value > 0){
+      total += Number(i.value);
+      detalle += `• ${i.dataset.ref} → ${i.value}\n`;
+    }
+  });
+  document.getElementById("textoResumen").value = `CLIENTE: ${document.getElementById("cliente").value}\nTOTAL UNIDADES: ${total}\n\nDETALLE:\n${detalle}`;
+}
+
+function limpiarFormulario(){
+  document.getElementById("formEDC").reset();
+  document.getElementById("refsCanal").innerHTML = "";
+  document.getElementById("refsAccesorios").innerHTML = "";
+  document.getElementById("textoResumen").value = "";
+  document.getElementById("cantidadInventario").disabled = true;
+}
+
+/* API */
+document.getElementById("formEDC").addEventListener("submit", async (e) => {
+  e.preventDefault();
+  const btn = document.getElementById("btnGuardar");
+  btn.disabled = true; btn.innerText = "Enviando...";
+
+  const formData = new URLSearchParams();
+  formData.append("edc", document.getElementById("edc").value);
+  formData.append("regional", document.getElementById("regional").value);
+  formData.append("ciudad", document.getElementById("ciudad").value);
+  formData.append("canal", document.getElementById("canal").value);
+  formData.append("cliente", document.getElementById("cliente").value);
+  formData.append("total", [...document.querySelectorAll("[data-ref]")].reduce((s, i) => s + Number(i.value || 0), 0));
+  formData.append("detalle", document.getElementById("textoResumen").value);
+
+  try {
+    await fetch("http://ir.infinityfreeapp.com/guardar.php", {
+      method: "POST",
+      body: formData,
+      headers: { 'Content-Type': 'application/x-www-form-urlencoded' }
+    });
+    alert("✅ Registro guardado exitosamente");
+    limpiarFormulario();
+  } catch (error) {
+    alert("❌ Error al conectar con el servidor. Verifica tu internet.");
+  } finally {
+    btn.disabled = false; btn.innerText = "Guardar Registro";
+  }
+});
+
+async function cargarTablaAdmin(){
+  try {
+    const res = await fetch("http://ir.infinityfreeapp.com/listar.php");
+    const data = await res.json();
+    const cuerpo = document.getElementById("cuerpoTablaAdmin");
+    cuerpo.innerHTML = data.map(r => `
+      <tr>
+        <td>${r.fecha || '-'}</td>
+        <td>${r.edc || '-'}</td>
+        <td>${r.cliente || '-'}</td>
+        <td>${r.ciudad || '-'}</td>
+        <td>${r.total || '0'}</td>
+      </tr>`).join("");
+  } catch (e) { console.error("Error cargando tabla"); }
+}
+
 async function descargarExcel(){
   const res = await fetch("http://ir.infinityfreeapp.com/listar.php");
   const data = await res.json();
-
-  let csv = "Fecha,EDC,Regional,Canal,Cliente,Ciudad,Total\n";
-
+  let csv = "\uFEFFFecha,EDC,Regional,Ciudad,Canal,Cliente,Total\n";
   data.forEach(r => {
-    csv += `"${r.fecha}","${r.edc}","${r.regional}","${r.canal}","${r.cliente}","${r.ciudad}","${r.total}"\n`;
+    csv += `"${r.fecha}","${r.edc}","${r.regional}","${r.ciudad}","${r.canal}","${r.cliente}","${r.total}"\n`;
   });
-
   const blob = new Blob([csv], { type: "text/csv;charset=utf-8;" });
-  const url = URL.createObjectURL(blob);
-
   const link = document.createElement("a");
-  link.href = url;
-  link.download = "HONOR_Registros.csv";
-  link.click();
-
-  URL.revokeObjectURL(url);
-}
-<script>
-/* ===== USUARIOS ===== */
-const usuarios = {
-  admin:"081065",
-  "Daniel Vanoy":"6505","Diana Pardo":"2553","Marcela Huertas":"6277",
-  "Hector Guerrero":"8882","Vanessa Sarmiento":"9428","Viviana Mora":"4784",
-  "Jhonatan Romero":"5154","Mauricio Lazo":"7474","Jose Valencia":"5958",
-  "Jose Lujan":"2996","Vivián Avellaneda":"2087"
-};
-
-const region = {
-  "Daniel Vanoy":"Center 1","Diana Pardo":"Center 2","Marcela Huertas":"Center 3",
-  "Hector Guerrero":"Coast 1","Vanessa Sarmiento":"Coast 2",
-  "Viviana Mora":"Coffee & West 1","Jhonatan Romero":"Coffee & West 2",
-  "Mauricio Lazo":"Coffee & West 3","Jose Valencia":"East 1",
-  "Jose Lujan":"East 2","Vivián Avellaneda":"East 3"
-};
-
-/* ===== CATALOGO ===== */
-const referenciasPorCanal = {
-  COMQUIA: [
-    "H400 Smart + 6","H400 Smart +12","Honor 200 Smart",
-    "Honor Magic 7 Lite 256Gb","Honor Magic 7 Lite 512Gb",
-    "Honor Magic 8 Lite 256Gb","Honor Pad X8A 128GB",
-    "Honor Play 9A 64GB","Honor Play 9C 256GB",
-    "Honor X5B 128GB","Honor X5B Plus",
-    "HONOR X5C 128GB","HONOR X5C 64GB",
-    "HONOR X6B 128GB","Honor X6B 256GB",
-    "HONOR X6C 128GB","Honor X6C 256GB",
-    "HONOR X7D","HONOR X8C 512GB",
-    "Honor X8D 512GB","X6C 256 SS"
-  ],
-  TOYAR: [
-    "H400 Smart +12","Honor Play 9A 128GB",
-    "HONOR X5C 64GB","HONOR X6C 128GB",
-    "Honor X6C 256GB","HONOR X8C 512GB",
-    "Honor X8D 512GB","Honor X9C Smart 256GB"
-  ]
-};
-
-const accesoriosEco = [
-  "Honor Headphone","Honor OWS","Honor Clip",
-  "Airfryer","Cleaner Rob vaccum",
-  "Earbuds X7e","Scooter","Watch 2i"
-];
-
-/* ===== LOGIN ===== */
-function login(){
-  if(!usuarios[usuario.value] || usuarios[usuario.value] !== clave.value){
-    errorLogin.style.display="block";
-    return;
-  }
-
-  loginBox.classList.add("hidden");
-  topBar.classList.remove("hidden");
-
-  if(usuario.value==="admin"){
-    vistaAdmin.classList.remove("hidden");
-    cargarTablaAdmin();
-  }else{
-    vistaEDC.classList.remove("hidden");
-    edc.value = usuario.value;
-    regional.value = region[usuario.value];
-  }
-}
-
-/* ===== REFERENCIAS ===== */
-function cargarReferenciasPorCanal(){
-  refsCanal.innerHTML="";
-  refsAccesorios.innerHTML="";
-
-  referenciasPorCanal[canal.value]?.forEach(r=>{
-    refsCanal.innerHTML+=`
-      <div class="referencias">
-        <div>${r}</div>
-        <input type="number" min="0" data-ref="${r}" oninput="actualizarResumen()">
-      </div>`;
-  });
-
-  accesoriosEco.forEach(r=>{
-    refsAccesorios.innerHTML+=`
-      <div class="referencias">
-        <div>${r}</div>
-        <input type="number" min="0" data-ref="${r}" oninput="actualizarResumen()">
-      </div>`;
-  });
-}
-
-/* ===== INVENTARIO ===== */
-function toggleInventario(){
-  cantidadInventario.disabled = tieneInventario.value !== "Sí";
-  if(tieneInventario.value !== "Sí") cantidadInventario.value = 0;
-  actualizarResumen();
-}
-
-/* ===== RESUMEN ===== */
-function actualizarResumen(){
-  let total=0, detalle="";
-  document.querySelectorAll("[data-ref]").forEach(i=>{
-    if(i.value>0){
-      total+=Number(i.value);
-      detalle+=`• ${i.dataset.ref} → ${i.value}\n`;
-    }
-  });
-  textoResumen.value = `TOTAL: ${total}\n${detalle}`;
-}
-
-/* ===== GUARDAR ===== */
-formEDC.addEventListener("submit",e=>{
-  e.preventDefault();
-
-  fetch("http://ir.infinityfreeapp.com/guardar.php",{
-    method:"POST",
-    body:new URLSearchParams({
-      fecha:new Date().toLocaleString(),
-      edc:edc.value,
-      regional:regional.value,
-      canal:canal.value,
-      cliente:cliente.value,
-      ciudad:ciudad.value,
-      total:[...document.querySelectorAll("[data-ref]")]
-              .reduce((s,i)=>s+Number(i.value||0),0),
-      detalle:textoResumen.value
-    })
-  })
-  .then(()=>alert("✅ Registro guardado"));
-});
-
-/* ===== ADMIN ===== */
-async function cargarTablaAdmin(){
-  const data = await (await fetch("http://ir.infinityfreeapp.com/listar.php")).json();
-  tablaAdmin.querySelector("tbody").innerHTML =
-    data.map(r=>`
-      <tr>
-        <td>${r.fecha}</td>
-        <td>${r.edc}</td>
-        <td>${r.cliente}</td>
-        <td>${r.total}</td>
-      </tr>`).join("");
-}
-
-/* ===== EXCEL ===== */
-async function descargarExcel(){
-  const data = await (await fetch("http://ir.infinityfreeapp.com/listar.php")).json();
-  let csv="Fecha,EDC,Cliente,Total\n";
-  data.forEach(r=>{
-    csv+=`"${r.fecha}","${r.edc}","${r.cliente}","${r.total}"\n`;
-  });
-  const link=document.createElement("a");
-  link.href=URL.createObjectURL(new Blob([csv]));
-  link.download="HONOR_Registros.csv";
+  link.href = URL.createObjectURL(blob);
+  link.download = "HONOR_Reporte_Ventas.csv";
   link.click();
 }
 </script>
 </body>
 </html>
-
