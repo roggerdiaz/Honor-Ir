@@ -264,73 +264,221 @@ th{background:#0078d4;color:white}
 </div>
 
 <script>
-const usuarios={
+/* ===== USUARIOS ===== */
+const usuarios = {
   admin:"081065",
-"Daniel Vanoy":"6505","Diana Pardo":"2553","Marcela Huertas":"6277",
-"Hector Guerrero":"8882","Vanessa Sarmiento":"9428","Viviana Mora":"4784",
-"Jhonatan Romero":"5154","Mauricio Lazo":"7474","Jose Valencia":"5958",
-"Jose Lujan":"2996","Vivián Avellaneda":"2087"
+  "Daniel Vanoy":"6505","Diana Pardo":"2553","Marcela Huertas":"6277",
+  "Hector Guerrero":"8882","Vanessa Sarmiento":"9428","Viviana Mora":"4784",
+  "Jhonatan Romero":"5154","Mauricio Lazo":"7474","Jose Valencia":"5958",
+  "Jose Lujan":"2996","Vivián Avellaneda":"2087"
 };
 
-const region={
-"Daniel Vanoy":"Center 1","Diana Pardo":"Center 2","Marcela Huertas":"Center 3",
-"Hector Guerrero":"Coast 1","Vanessa Sarmiento":"Coast 2","Viviana Mora":"Coffee & West 1",
-"Jhonatan Romero":"Coffee & West 2","Mauricio Lazo":"Coffee & West 3",
-"Jose Valencia":"East 1","Jose Lujan":"East 2","Vivián Avellaneda":"East 3"
+const region = {
+  "Daniel Vanoy":"Center 1","Diana Pardo":"Center 2","Marcela Huertas":"Center 3",
+  "Hector Guerrero":"Coast 1","Vanessa Sarmiento":"Coast 2",
+  "Viviana Mora":"Coffee & West 1","Jhonatan Romero":"Coffee & West 2",
+  "Mauricio Lazo":"Coffee & West 3","Jose Valencia":"East 1",
+  "Jose Lujan":"East 2","Vivián Avellaneda":"East 3"
 };
 
-const referenciasPorCanal={
-COMQUIA:["H400 Smart + 6","H400 Smart +12","Honor 200 Smart","Honor Magic 7 Lite 256Gb",
-"Honor Magic 7 Lite 512Gb","Honor Magic 8 Lite 256Gb","Honor Pad X8A 128GB",
-"Honor Play 9A 64GB","Honor Play 9C 256GB","Honor X5B 128GB","Honor X5B Plus",
-"HONOR X5C 128GB","HONOR X5C 64GB","HONOR X6B 128GB","Honor X6B 256GB",
-"HONOR X6C 128GB","Honor X6C 256GB","HONOR X7D","HONOR X8C 512GB",
-"Honor X8D 512GB","X6C 256 Claro V"],
-TOYAR:["H400 Smart +12","Honor Play 9A 128GB","HONOR X5C 64GB",
-"HONOR X6C 128GB","Honor X6C 256GB","HONOR X8C 512GB",
-"Honor X8D 512GB","Honor X9C Smart 256GB"]
-};
-
-const accesoriosEco=[
-"Honor Headphone","Honor OWS","Honor Clip","Airfryer",
-"Cleaner Rob vaccum","Earbuds X7e","Scooter","Watch 2i"
-];
-
+/* ===== LOGIN ===== */
 function login(){
-  const u=usuario.value,p=clave.value;
-  if(!usuarios[u]||usuarios[u]!==p){errorLogin.style.display="block";return;}
-  errorLogin.style.display="none";
+  const u = usuario.value;
+  const p = clave.value;
+
+  if(!usuarios[u] || usuarios[u] !== p){
+    errorLogin.style.display = "block";
+    return;
+  }
+
+  errorLogin.style.display = "none";
   loginBox.classList.add("hidden");
   topBar.classList.remove("hidden");
 
-  if(u==="admin"){
+  if(u === "admin"){
     vistaAdmin.classList.remove("hidden");
     cargarTablaAdmin();
   }else{
     vistaEDC.classList.remove("hidden");
-    edc.value=u;
-    regional.value=region[u];
+    edc.value = u;
+    regional.value = region[u];
   }
 }
 
-function cargarReferenciasPorCanal(){
-  refsCanal.innerHTML="";
-  refsAccesorios.innerHTML="";
-  referenciasPorCanal[canal.value]?.forEach(r=>{
-    refsCanal.innerHTML+=`<div class="referencias"><div>${r}</div>
-    <input type="number" min="0" data-ref="${r}" oninput="actualizarResumen()"></div>`;
+/* ===== GUARDAR REGISTRO ===== */
+formEDC.addEventListener("submit", e => {
+  e.preventDefault();
+
+  fetch("https://TU-DOMINIO/honor-backend/guardar.php", {
+    method: "POST",
+    headers: { "Content-Type": "application/json" },
+    body: JSON.stringify({
+      fecha: new Date().toLocaleString(),
+      edc: edc.value,
+      regional: regional.value,
+      canal: canal.value,
+      cliente: cliente.value,
+      ciudad: ciudad.value,
+      direccion: direccion.value,
+      dueno: dueno.value,
+      encargado: encargado.value,
+      telefono: telefono.value,
+      inventario: tieneInventario.value,
+      cantidad: cantidadInventario.value,
+      total: [...document.querySelectorAll("[data-ref]")]
+              .reduce((s,i)=>s + Number(i.value||0),0),
+      detalle: textoResumen.value
+    })
+  })
+  .then(() => {
+    alert("✅ Registro guardado");
+    limpiarFormulario();
   });
-  accesoriosEco.forEach(r=>{
-    refsAccesorios.innerHTML+=`<div class="referencias"><div>${r}</div>
-    <input type="number" min="0" data-ref="${r}" oninput="actualizarResumen()"></div>`;
+});
+
+/* ===== ADMIN ===== */
+async function cargarTablaAdmin(){
+  const res = await fetch(
+    "https://TU-DOMINIO/honor-backend/listar.php"
+  );
+  const data = await res.json();
+  const tbody = document.querySelector("#tablaAdmin tbody");
+  tbody.innerHTML = "";
+
+  data.forEach(r => {
+    tbody.innerHTML += `
+      <tr>
+        <td>${r.fecha}</td>
+        <td>${r.edc}</td>
+        <td>${r.regional}</td>
+        <td>${r.canal}</td>
+        <td>${r.cliente}</td>
+        <td>${r.ciudad}</td>
+        <td>${r.total}</td>
+        <td style="white-space:pre-line">${r.detalle}</td>
+        <td>
+          <button onclick="borrarRegistro('${r.id}')">Borrar</button>
+        </td>
+      </tr>
+    `;
   });
 }
 
+function borrarRegistro(id){
+  if(!confirm("¿Borrar registro?")) return;
+  fetch(`https://TU-DOMINIO/honor-backend/borrar.php?id=${id}`)
+    .then(()=>cargarTablaAdmin());
+}
+
+/* ===== UTIL ===== */
+function limpiarFormulario(){
+  formEDC.reset();
+  textoResumen.value="";
+}
+
+function salirMenu(){
+  vistaEDC.classList.add("hidden");
+  vistaAdmin.classList.add("hidden");
+  topBar.classList.add("hidden");
+  loginBox.classList.remove("hidden");
+}
+function cargarReferenciasPorCanal(){
+  refsCanal.innerHTML = "";
+  refsAccesorios.innerHTML = "";
+
+  if(!referenciasPorCanal[canal.value]) return;
+
+  referenciasPorCanal[canal.value].forEach(r => {
+    refsCanal.innerHTML += `
+      <div class="referencias">
+        <div>${r}</div>
+        <input type="number" min="0" data-ref="${r}" oninput="actualizarResumen()">
+      </div>
+    `;
+  });
+
+  accesoriosEco.forEach(r => {
+    refsAccesorios.innerHTML += `
+      <div class="referencias">
+        <div>${r}</div>
+        <input type="number" min="0" data-ref="${r}" oninput="actualizarResumen()">
+      </div>
+    `;
+  });
+}
+/* ===== DATA DE REFERENCIAS ===== */
+const referenciasPorCanal = {
+  COMQUIA: [
+    "H400 Smart + 6","H400 Smart +12","Honor 200 Smart",
+    "Honor Magic 7 Lite 256Gb","Honor Magic 7 Lite 512Gb",
+    "Honor Magic 8 Lite 256Gb","Honor Pad X8A 128GB",
+    "Honor Play 9A 64GB","Honor Play 9C 256GB",
+    "Honor X5B 128GB","Honor X5B Plus",
+    "HONOR X5C 128GB","HONOR X5C 64GB",
+    "HONOR X6B 128GB","Honor X6B 256GB",
+    "HONOR X6C 128GB","Honor X6C 256GB",
+    "HONOR X7D","HONOR X8C 512GB",
+    "Honor X8D 512GB","X6C 256 Claro V"
+  ],
+  TOYAR: [
+    "H400 Smart +12","Honor Play 9A 128GB",
+    "HONOR X5C 64GB","HONOR X6C 128GB",
+    "Honor X6C 256GB","HONOR X8C 512GB",
+    "Honor X8D 512GB","Honor X9C Smart 256GB"
+  ]
+};
+
+const accesoriosEco = [
+  "Honor Headphone","Honor OWS","Honor Clip",
+  "Airfryer","Cleaner Rob vaccum",
+  "Earbuds X7e","Scooter","Watch 2i"
+];
+
+/* ===== CARGAR REFERENCIAS ===== */
+function cargarReferenciasPorCanal(){
+  refsCanal.innerHTML = "";
+  refsAccesorios.innerHTML = "";
+
+  if(!referenciasPorCanal[canal.value]) return;
+
+  referenciasPorCanal[canal.value].forEach(r => {
+    refsCanal.innerHTML += `
+      <div class="referencias">
+        <div>${r}</div>
+        <input type="number" min="0" data-ref="${r}" oninput="actualizarResumen()">
+      </div>
+    `;
+  });
+
+  accesoriosEco.forEach(r => {
+    refsAccesorios.innerHTML += `
+      <div class="referencias">
+        <div>${r}</div>
+        <input type="number" min="0" data-ref="${r}" oninput="actualizarResumen()">
+      </div>
+    `;
+  });
+}
+
+/* ===== INVENTARIO ===== */
+function toggleInventario(){
+  if(tieneInventario.value === "Sí"){
+    cantidadInventario.disabled = false;
+    cantidadInventario.value = "";
+    cantidadInventario.focus();
+  }else{
+    cantidadInventario.disabled = true;
+    cantidadInventario.value = 0;
+  }
+  actualizarResumen();
+}
+
+/* ===== RESUMEN ===== */
 function actualizarResumen(){
   let total = 0;
   let detalle = "";
 
-  document.querySelectorAll("[data-ref]").forEach(i=>{
+  document.querySelectorAll("[data-ref]").forEach(i => {
     const val = Number(i.value || 0);
     if(val > 0){
       detalle += `• ${i.dataset.ref} → ${val}\n`;
@@ -340,8 +488,8 @@ function actualizarResumen(){
 
   const inventarioTxt =
     tieneInventario.value === "Sí"
-    ? `Sí (${cantidadInventario.value || 0})`
-    : tieneInventario.value || "-";
+      ? `Sí (${cantidadInventario.value || 0})`
+      : tieneInventario.value || "-";
 
   textoResumen.value =
 `CONFIRMO INYECCIÓN
@@ -356,112 +504,6 @@ ${detalle || "-"}
 
 TOTAL UNIDADES: ${total}`;
 }
-
-
-formEDC.addEventListener("submit",e=>{
-  e.preventDefault();
-  const data=JSON.parse(localStorage.getItem("registrosHonor")||"[]");
-data.push({
-  fecha: new Date().toLocaleString(),
-  edc: edc.value,
-  regional: regional.value,
-  canal: canal.value,
-  cliente: cliente.value,
-  ciudad: ciudad.value,
-  direccion: direccion.value,
-  dueno: dueno.value,
-  encargado: encargado.value,
-  telefono: telefono.value,
-  tieneInventario: tieneInventario.value,
-  cantidadInventario: cantidadInventario.value,
-  total: [...document.querySelectorAll("[data-ref]")]
-           .reduce((s,i)=>s + Number(i.value||0),0),
-  detalle: textoResumen.value
-});
-
-  localStorage.setItem("registrosHonor",JSON.stringify(data));
-  alert("Registro guardado");
-  limpiarFormulario();
-});
-
-function cargarTablaAdmin(){
-  const tbody = document.querySelector("#tablaAdmin tbody");
-  tbody.innerHTML = "";
-
-  const data = JSON.parse(localStorage.getItem("registrosHonor") || "[]");
-
-  data.forEach((r, index) => {
-    tbody.innerHTML += `
-      <tr>
-        <td>${r.fecha}</td>
-        <td>${r.edc}</td>
-        <td>${r.regional}</td>
-        <td>${r.canal}</td>
-        <td>${r.cliente}</td>
-        <td>${r.ciudad}</td>
-        <td>${r.direccion}</td>
-        <td>${r.dueno}</td>
-        <td>${r.encargado}</td>
-        <td>${r.telefono}</td>
-        <td>${r.tieneInventario}</td>
-        <td>${r.cantidadInventario}</td>
-        <td>${r.total}</td>
-        <td style="white-space:pre-line">${r.detalle}</td>
-        <td>
-          <button onclick="borrarRegistro(${index})"
-            style="background:#c0392b;color:white;border:none;
-                   padding:6px 10px;border-radius:6px;cursor:pointer">
-            Borrar
-          </button>
-        </td>
-      </tr>
-    `;
-  });
-}
-
-
-function descargarExcel(){
-  let csv="Fecha,EDC,Regional,Canal,Cliente,Total,Detalle\n";
-  JSON.parse(localStorage.getItem("registrosHonor")||"[]").forEach(r=>{
-    csv+=`"${r.fecha}","${r.edc}","${r.regional}","${r.canal}","${r.cliente}","${r.total}","${r.detalle.replace(/\n/g," | ")}"\n`;
-  });
-  const link=document.createElement("a");
-  link.href=URL.createObjectURL(new Blob([csv]));
-  link.download="HONOR_Registros.csv";
-  link.click();
-}
-
-function limpiarFormulario(){formEDC.reset();textoResumen.value="";}
-function salirMenu(){
-  vistaEDC.classList.add("hidden");
-  vistaAdmin.classList.add("hidden");
-  topBar.classList.add("hidden");
-  loginBox.classList.remove("hidden");
-}
-function toggleInventario(){
-  const select = document.getElementById("tieneInventario");
-  const input = document.getElementById("cantidadInventario");
-
-  if(select.value === "Sí"){
-    input.disabled = false;   // habilita la caja
-    input.value = "";         // quita el 0
-    input.focus();            // cursor listo para escribir
-  }else{
-    input.disabled = true;    // deshabilita
-    input.value = 0;          // vuelve a 0
-  }
-}
-function borrarRegistro(index){
-  if(!confirm("¿Seguro que desea borrar este registro?")){
-    return;
-  }
-
-  const data = JSON.parse(localStorage.getItem("registrosHonor") || "[]");
-  data.splice(index, 1); // borra solo ese registro
-  localStorage.setItem("registrosHonor", JSON.stringify(data));
-  cargarTablaAdmin(); // refresca la tabla
-}
-
 </script>
 </body>
 </html>
