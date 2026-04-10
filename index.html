@@ -228,19 +228,6 @@ th{background:#0078d4;color:white}
   </div>
 </div>
 
-/* ADMIN */
-async function cargarTablaAdmin(){
-  const data = await (await fetch("http://ir.infinityfreeapp.com/listar.php")).json();
-  tablaAdmin.querySelector("tbody").innerHTML =
-    data.map(r=>`
-      <tr>
-        <td>${r.fecha}</td>
-        <td>${r.edc}</td>
-        <td>${r.cliente}</td>
-        <td>${r.total}</td>
-      </tr>`).join("");
-}
-
 /* ===== DESCARGAR EXCEL ===== */
 async function descargarExcel(){
   const res = await fetch("http://ir.infinityfreeapp.com/listar.php");
