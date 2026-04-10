@@ -357,7 +357,7 @@ function actualizarResumen(){
 formEDC.addEventListener("submit",e=>{
   e.preventDefault();
 
-  fetch("https://ir.infinityfreeapp.com/guardar.php",{
+  fetch("http://ir.infinityfreeapp.com/guardar.php",{
     method:"POST",
     headers:{ "Content-Type":"application/json" },
     body:JSON.stringify({
@@ -376,7 +376,7 @@ formEDC.addEventListener("submit",e=>{
 
 /* ADMIN */
 async function cargarTablaAdmin(){
-  const data = await (await fetch("https://ir.infinityfreeapp.com/listar.php")).json();
+  const data = await (await fetch("http://ir.infinityfreeapp.com/listar.php")).json();
   tablaAdmin.querySelector("tbody").innerHTML =
     data.map(r=>`
       <tr>
@@ -388,7 +388,7 @@ async function cargarTablaAdmin(){
 }
 /* ===== DESCARGAR EXCEL ===== */
 async function descargarExcel(){
-  const res = await fetch("https://ir.infinityfreeapp.com/listar.php");
+  const res = await fetch("http://ir.infinityfreeapp.com/listar.php");
   const data = await res.json();
 
   let csv = "Fecha,EDC,Regional,Canal,Cliente,Ciudad,Total\n";
