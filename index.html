@@ -381,6 +381,28 @@ async function cargarTablaAdmin(){
         <td>${r.total}</td>
       </tr>`).join("");
 }
+  <script>
+/* ===== DESCARGAR EXCEL ===== */
+async function descargarExcel(){
+  const res = await fetch("https://ir.infinityfreeapp.com/listar.php");
+  const data = await res.json();
+
+  let csv = "Fecha,EDC,Regional,Canal,Cliente,Ciudad,Total\n";
+
+  data.forEach(r => {
+    csv += `"${r.fecha}","${r.edc}","${r.regional}","${r.canal}","${r.cliente}","${r.ciudad}","${r.total}"\n`;
+  });
+
+  const blob = new Blob([csv], { type: "text/csv;charset=utf-8;" });
+  const url = URL.createObjectURL(blob);
+
+  const link = document.createElement("a");
+  link.href = url;
+  link.download = "HONOR_Registros.csv";
+  link.click();
+
+  URL.revokeObjectURL(url);
+}
 </script>
 </body>
 </html>
