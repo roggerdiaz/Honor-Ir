@@ -228,40 +228,40 @@ th{background:#0078d4;color:white}
   </div>
 </div>
 
-<!-- ADMIN -->
-<div class="box hidden" id="vistaAdmin">
-  <h2>HONOR - IR</h2>
-<p style="margin-top:-10px;color:#6b7280;font-size:13px">
-  Registros de Inyección
-</p>
+/* ADMIN */
+async function cargarTablaAdmin(){
+  const data = await (await fetch("http://ir.infinityfreeapp.com/listar.php")).json();
+  tablaAdmin.querySelector("tbody").innerHTML =
+    data.map(r=>`
+      <tr>
+        <td>${r.fecha}</td>
+        <td>${r.edc}</td>
+        <td>${r.cliente}</td>
+        <td>${r.total}</td>
+      </tr>`).join("");
+}
 
-  <button onclick="descargarExcel()">Descargar Excel</button>
-  <table id="tablaAdmin">
+/* ===== DESCARGAR EXCEL ===== */
+async function descargarExcel(){
+  const res = await fetch("http://ir.infinityfreeapp.com/listar.php");
+  const data = await res.json();
 
-    <thead>
-  <tr>
-    <th>Fecha</th>
-    <th>EDC</th>
-    <th>Regional</th>
-    <th>Canal</th>
-    <th>Cliente</th>
-    <th>Ciudad</th>
-    <th>Dirección</th>
-    <th>Dueño</th>
-    <th>Encargado</th>
-    <th>Teléfono</th>
-    <th>Inventario</th>
-    <th>Cant.</th>
-    <th>Total</th>
-    <th>Detalle</th>
-    <th>Acción</th>
-  </tr>
-</thead>
+  let csv = "Fecha,EDC,Regional,Canal,Cliente,Ciudad,Total\n";
 
-    </thead>
-    <tbody></tbody>
-  </table>
-</div>
+  data.forEach(r => {
+    csv += `"${r.fecha}","${r.edc}","${r.regional}","${r.canal}","${r.cliente}","${r.ciudad}","${r.total}"\n`;
+  });
+
+  const blob = new Blob([csv], { type: "text/csv;charset=utf-8;" });
+  const url = URL.createObjectURL(blob);
+
+  const link = document.createElement("a");
+  link.href = url;
+  link.download = "HONOR_Registros.csv";
+  link.click();
+
+  URL.revokeObjectURL(url);
+}
 <script>
 const usuarios = {
   admin:"081065",
