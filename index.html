@@ -279,25 +279,39 @@ const region = {
   "Jose Lujan":"East 2","Vivián Avellaneda":"East 3"
 };
 
-
 const referenciasPorCanal = {
   COMQUIA: [
-    "H400 Smart + 6","H400 Smart +12","Honor 200 Smart","Honor Magic 7 Lite 256Gb","Honor Magic 7 Lite 512Gb","Honor Magic 8 Lite 256Gb","Honor Pad X8A 128GB","Honor Play 9A 64GB","Honor Play 9C 256GB","Honor X5B 128GB",   "Honor X5B Plus",
-    "HONOR X5C 128GB","HONOR X5C 64GB","HONOR X6B 128GB","Honor X6B 256GB","HONOR X6C 128GB","Honor X6C 256GB","HONOR X7D","HONOR X8C 512GB","Honor X8D 512GB","X6C 256 SS"
+    "H400 Smart + 6","H400 Smart +12","Honor 200 Smart",
+    "Honor Magic 7 Lite 256Gb","Honor Magic 7 Lite 512Gb",
+    "Honor Magic 8 Lite 256Gb","Honor Pad X8A 128GB",
+    "Honor Play 9A 64GB","Honor Play 9C 256GB",
+    "Honor X5B 128GB","Honor X5B Plus",
+    "HONOR X5C 128GB","HONOR X5C 64GB",
+    "HONOR X6B 128GB","Honor X6B 256GB",
+    "HONOR X6C 128GB","Honor X6C 256GB",
+    "HONOR X7D","HONOR X8C 512GB",
+    "Honor X8D 512GB","X6C 256 SS"
   ],
   TOYAR: [
-    "H400 Smart +12","Honor Play 9A 128GB","HONOR X5C 64GB","HONOR X6C 128GB","Honor X6C 256GB","HONOR X8C 512GB","Honor X8D 512GB","Honor X9C Smart 256GB"
+    "H400 Smart +12","Honor Play 9A 128GB",
+    "HONOR X5C 64GB","HONOR X6C 128GB",
+    "Honor X6C 256GB","HONOR X8C 512GB",
+    "Honor X8D 512GB","Honor X9C Smart 256GB"
   ]
 };
 
-  const accesoriosEco = ["Honor Headphone","Honor OWS","Honor Clip","Airfryer","Cleaner Rob vaccum","Earbuds X7e","Scooter","Watch 2i"];
+const accesoriosEco = [
+  "Honor Headphone","Honor OWS","Honor Clip",
+  "Airfryer","Cleaner Rob vaccum",
+  "Earbuds X7e","Scooter","Watch 2i"
+];
+
 /* LOGIN */
 function login(){
   if(!usuarios[usuario.value] || usuarios[usuario.value] !== clave.value){
     errorLogin.style.display="block";
     return;
   }
-
   loginBox.classList.add("hidden");
   topBar.classList.remove("hidden");
 
@@ -349,7 +363,6 @@ function actualizarResumen(){
       detalle+=`• ${i.dataset.ref} → ${i.value}\n`;
     }
   });
-
   textoResumen.value=`TOTAL: ${total}\n${detalle}`;
 }
 
@@ -357,21 +370,21 @@ function actualizarResumen(){
 formEDC.addEventListener("submit",e=>{
   e.preventDefault();
 
-fetch("http://ir.infinityfreeapp.com/guardar.php",{
-  method:"POST",
-  body: new URLSearchParams({
-    fecha: new Date().toLocaleString(),
-    edc: edc.value,
-    regional: regional.value,
-    canal: canal.value,
-    cliente: cliente.value,
-    ciudad: ciudad.value,
-    total: [...document.querySelectorAll("[data-ref]")]
-              .reduce((s,i)=>s+Number(i.value||0),0),
-    detalle: textoResumen.value
-  })
-})
-.then(()=>alert("✅ Registro guardado"));
+  fetch("http://ir.infinityfreeapp.com/guardar.php",{
+    method:"POST",
+    body:new URLSearchParams({
+      fecha:new Date().toLocaleString(),
+      edc:edc.value,
+      regional:regional.value,
+      canal:canal.value,
+      cliente:cliente.value,
+      ciudad:ciudad.value,
+      total:[...document.querySelectorAll("[data-ref]")]
+            .reduce((s,i)=>s+Number(i.value||0),0),
+      detalle:textoResumen.value
+    })
+  }).then(()=>alert("✅ Registro guardado"));
+});
 
 /* ADMIN */
 async function cargarTablaAdmin(){
@@ -385,26 +398,18 @@ async function cargarTablaAdmin(){
         <td>${r.total}</td>
       </tr>`).join("");
 }
-/* ===== DESCARGAR EXCEL ===== */
+
+/* DESCARGAR EXCEL */
 async function descargarExcel(){
-  const res = await fetch("http://ir.infinityfreeapp.com/listar.php");
-  const data = await res.json();
-
-  let csv = "Fecha,EDC,Regional,Canal,Cliente,Ciudad,Total\n";
-
-  data.forEach(r => {
-    csv += `"${r.fecha}","${r.edc}","${r.regional}","${r.canal}","${r.cliente}","${r.ciudad}","${r.total}"\n`;
+  const data = await (await fetch("http://ir.infinityfreeapp.com/listar.php")).json();
+  let csv="Fecha,EDC,Cliente,Total\n";
+  data.forEach(r=>{
+    csv+=`"${r.fecha}","${r.edc}","${r.cliente}","${r.total}"\n`;
   });
-
-  const blob = new Blob([csv], { type: "text/csv;charset=utf-8;" });
-  const url = URL.createObjectURL(blob);
-
-  const link = document.createElement("a");
-  link.href = url;
-  link.download = "HONOR_Registros.csv";
+  const link=document.createElement("a");
+  link.href=URL.createObjectURL(new Blob([csv]));
+  link.download="HONOR_Registros.csv";
   link.click();
-
-  URL.revokeObjectURL(url);
 }
 </script>
 </body>
