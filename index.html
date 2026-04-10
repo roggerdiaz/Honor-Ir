@@ -250,6 +250,7 @@ async function descargarExcel(){
   URL.revokeObjectURL(url);
 }
 <script>
+/* ===== USUARIOS ===== */
 const usuarios = {
   admin:"081065",
   "Daniel Vanoy":"6505","Diana Pardo":"2553","Marcela Huertas":"6277",
@@ -266,6 +267,7 @@ const region = {
   "Jose Lujan":"East 2","Vivián Avellaneda":"East 3"
 };
 
+/* ===== CATALOGO ===== */
 const referenciasPorCanal = {
   COMQUIA: [
     "H400 Smart + 6","H400 Smart +12","Honor 200 Smart",
@@ -293,12 +295,13 @@ const accesoriosEco = [
   "Earbuds X7e","Scooter","Watch 2i"
 ];
 
-/* LOGIN */
+/* ===== LOGIN ===== */
 function login(){
   if(!usuarios[usuario.value] || usuarios[usuario.value] !== clave.value){
     errorLogin.style.display="block";
     return;
   }
+
   loginBox.classList.add("hidden");
   topBar.classList.remove("hidden");
 
@@ -307,12 +310,12 @@ function login(){
     cargarTablaAdmin();
   }else{
     vistaEDC.classList.remove("hidden");
-    edc.value=usuario.value;
-    regional.value=region[usuario.value];
+    edc.value = usuario.value;
+    regional.value = region[usuario.value];
   }
 }
 
-/* REFERENCIAS */
+/* ===== REFERENCIAS ===== */
 function cargarReferenciasPorCanal(){
   refsCanal.innerHTML="";
   refsAccesorios.innerHTML="";
@@ -334,14 +337,14 @@ function cargarReferenciasPorCanal(){
   });
 }
 
-/* INVENTARIO */
+/* ===== INVENTARIO ===== */
 function toggleInventario(){
   cantidadInventario.disabled = tieneInventario.value !== "Sí";
   if(tieneInventario.value !== "Sí") cantidadInventario.value = 0;
   actualizarResumen();
 }
 
-/* RESUMEN */
+/* ===== RESUMEN ===== */
 function actualizarResumen(){
   let total=0, detalle="";
   document.querySelectorAll("[data-ref]").forEach(i=>{
@@ -350,10 +353,10 @@ function actualizarResumen(){
       detalle+=`• ${i.dataset.ref} → ${i.value}\n`;
     }
   });
-  textoResumen.value=`TOTAL: ${total}\n${detalle}`;
+  textoResumen.value = `TOTAL: ${total}\n${detalle}`;
 }
 
-/* GUARDAR */
+/* ===== GUARDAR ===== */
 formEDC.addEventListener("submit",e=>{
   e.preventDefault();
 
@@ -367,13 +370,14 @@ formEDC.addEventListener("submit",e=>{
       cliente:cliente.value,
       ciudad:ciudad.value,
       total:[...document.querySelectorAll("[data-ref]")]
-            .reduce((s,i)=>s+Number(i.value||0),0),
+              .reduce((s,i)=>s+Number(i.value||0),0),
       detalle:textoResumen.value
     })
-  }).then(()=>alert("✅ Registro guardado"));
+  })
+  .then(()=>alert("✅ Registro guardado"));
 });
 
-/* ADMIN */
+/* ===== ADMIN ===== */
 async function cargarTablaAdmin(){
   const data = await (await fetch("http://ir.infinityfreeapp.com/listar.php")).json();
   tablaAdmin.querySelector("tbody").innerHTML =
@@ -386,7 +390,7 @@ async function cargarTablaAdmin(){
       </tr>`).join("");
 }
 
-/* DESCARGAR EXCEL */
+/* ===== EXCEL ===== */
 async function descargarExcel(){
   const data = await (await fetch("http://ir.infinityfreeapp.com/listar.php")).json();
   let csv="Fecha,EDC,Cliente,Total\n";
