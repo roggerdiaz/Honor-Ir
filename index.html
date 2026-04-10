@@ -281,228 +281,135 @@ const region = {
   "Jose Lujan":"East 2","Vivián Avellaneda":"East 3"
 };
 
+const referenciasPorCanal = {
+  COMQUIA:["H400 Smart + 6","H400 Smart +12","Honor 200 Smart"],
+  TOYAR:["H400 Smart +12","Honor Play 9A 128GB"]
+};
+
+const accesoriosEco = [
+  "Honor Headphone","Honor OWS","Honor Clip","Airfryer"
+];
+
 /* ===== LOGIN ===== */
 function login(){
-  const u = usuario.value;
-  const p = clave.value;
-
-  if(!usuarios[u] || usuarios[u] !== p){
-    errorLogin.style.display = "block";
+  if(!usuarios[usuario.value] || usuarios[usuario.value] !== clave.value){
+    errorLogin.style.display="block";
     return;
   }
 
-  errorLogin.style.display = "none";
   loginBox.classList.add("hidden");
   topBar.classList.remove("hidden");
 
-  if(u === "admin"){
+  if(usuario.value==="admin"){
     vistaAdmin.classList.remove("hidden");
     cargarTablaAdmin();
   }else{
     vistaEDC.classList.remove("hidden");
-    edc.value = u;
-    regional.value = region[u];
+    edc.value=usuario.value;
+    regional.value=region[usuario.value];
   }
 }
 
-/* ===== GUARDAR REGISTRO ===== */
-formEDC.addEventListener("submit", e => {
-  e.preventDefault();
-
-  fetch("https://TU-DOMINIO/honor-backend/guardar.php", {
-    method: "POST",
-    headers: { "Content-Type": "application/json" },
-    body: JSON.stringify({
-      fecha: new Date().toLocaleString(),
-      edc: edc.value,
-      regional: regional.value,
-      canal: canal.value,
-      cliente: cliente.value,
-      ciudad: ciudad.value,
-      direccion: direccion.value,
-      dueno: dueno.value,
-      encargado: encargado.value,
-      telefono: telefono.value,
-      inventario: tieneInventario.value,
-      cantidad: cantidadInventario.value,
-      total: [...document.querySelectorAll("[data-ref]")]
-              .reduce((s,i)=>s + Number(i.value||0),0),
-      detalle: textoResumen.value
-    })
-  })
-  .then(() => {
-    alert("✅ Registro guardado");
-    limpiarFormulario();
-  });
-});
-
-/* ===== ADMIN ===== */
-async function cargarTablaAdmin(){
-  const res = await fetch(
-    "https://TU-DOMINIO/honor-backend/listar.php"
-  );
-  const data = await res.json();
-  const tbody = document.querySelector("#tablaAdmin tbody");
-  tbody.innerHTML = "";
-
-  data.forEach(r => {
-    tbody.innerHTML += `
-      <tr>
-        <td>${r.fecha}</td>
-        <td>${r.edc}</td>
-        <td>${r.regional}</td>
-        <td>${r.canal}</td>
-        <td>${r.cliente}</td>
-        <td>${r.ciudad}</td>
-        <td>${r.total}</td>
-        <td style="white-space:pre-line">${r.detalle}</td>
-        <td>
-          <button onclick="borrarRegistro('${r.id}')">Borrar</button>
-        </td>
-      </tr>
-    `;
-  });
-}
-
-function borrarRegistro(id){
-  if(!confirm("¿Borrar registro?")) return;
-  fetch(`https://TU-DOMINIO/honor-backend/borrar.php?id=${id}`)
-    .then(()=>cargarTablaAdmin());
-}
-
-/* ===== UTIL ===== */
-function limpiarFormulario(){
-  formEDC.reset();
-  textoResumen.value="";
-}
-
-function salirMenu(){
-  vistaEDC.classList.add("hidden");
-  vistaAdmin.classList.add("hidden");
-  topBar.classList.add("hidden");
-  loginBox.classList.remove("hidden");
-}
+/* ===== REFERENCIAS ===== */
 function cargarReferenciasPorCanal(){
-  refsCanal.innerHTML = "";
-  refsAccesorios.innerHTML = "";
+  refsCanal.innerHTML="";
+  refsAccesorios.innerHTML="";
 
-  if(!referenciasPorCanal[canal.value]) return;
-
-  referenciasPorCanal[canal.value].forEach(r => {
-    refsCanal.innerHTML += `
+  referenciasPorCanal[canal.value]?.forEach(r=>{
+    refsCanal.innerHTML+=`
       <div class="referencias">
         <div>${r}</div>
         <input type="number" min="0" data-ref="${r}" oninput="actualizarResumen()">
-      </div>
-    `;
+      </div>`;
   });
 
-  accesoriosEco.forEach(r => {
-    refsAccesorios.innerHTML += `
+  accesoriosEco.forEach(r=>{
+    refsAccesorios.innerHTML+=`
       <div class="referencias">
         <div>${r}</div>
         <input type="number" min="0" data-ref="${r}" oninput="actualizarResumen()">
-      </div>
-    `;
-  });
-}
-/* ===== DATA DE REFERENCIAS ===== */
-const referenciasPorCanal = {
-  COMQUIA: [
-    "H400 Smart + 6","H400 Smart +12","Honor 200 Smart",
-    "Honor Magic 7 Lite 256Gb","Honor Magic 7 Lite 512Gb",
-    "Honor Magic 8 Lite 256Gb","Honor Pad X8A 128GB",
-    "Honor Play 9A 64GB","Honor Play 9C 256GB",
-    "Honor X5B 128GB","Honor X5B Plus",
-    "HONOR X5C 128GB","HONOR X5C 64GB",
-    "HONOR X6B 128GB","Honor X6B 256GB",
-    "HONOR X6C 128GB","Honor X6C 256GB",
-    "HONOR X7D","HONOR X8C 512GB",
-    "Honor X8D 512GB","X6C 256 Claro V"
-  ],
-  TOYAR: [
-    "H400 Smart +12","Honor Play 9A 128GB",
-    "HONOR X5C 64GB","HONOR X6C 128GB",
-    "Honor X6C 256GB","HONOR X8C 512GB",
-    "Honor X8D 512GB","Honor X9C Smart 256GB"
-  ]
-};
-
-const accesoriosEco = [
-  "Honor Headphone","Honor OWS","Honor Clip",
-  "Airfryer","Cleaner Rob vaccum",
-  "Earbuds X7e","Scooter","Watch 2i"
-];
-
-/* ===== CARGAR REFERENCIAS ===== */
-function cargarReferenciasPorCanal(){
-  refsCanal.innerHTML = "";
-  refsAccesorios.innerHTML = "";
-
-  if(!referenciasPorCanal[canal.value]) return;
-
-  referenciasPorCanal[canal.value].forEach(r => {
-    refsCanal.innerHTML += `
-      <div class="referencias">
-        <div>${r}</div>
-        <input type="number" min="0" data-ref="${r}" oninput="actualizarResumen()">
-      </div>
-    `;
-  });
-
-  accesoriosEco.forEach(r => {
-    refsAccesorios.innerHTML += `
-      <div class="referencias">
-        <div>${r}</div>
-        <input type="number" min="0" data-ref="${r}" oninput="actualizarResumen()">
-      </div>
-    `;
+      </div>`;
   });
 }
 
 /* ===== INVENTARIO ===== */
 function toggleInventario(){
-  if(tieneInventario.value === "Sí"){
-    cantidadInventario.disabled = false;
-    cantidadInventario.value = "";
-    cantidadInventario.focus();
-  }else{
-    cantidadInventario.disabled = true;
-    cantidadInventario.value = 0;
-  }
+  cantidadInventario.disabled = tieneInventario.value !== "Sí";
+  if(tieneInventario.value !== "Sí") cantidadInventario.value = 0;
   actualizarResumen();
 }
 
 /* ===== RESUMEN ===== */
 function actualizarResumen(){
-  let total = 0;
-  let detalle = "";
-
-  document.querySelectorAll("[data-ref]").forEach(i => {
-    const val = Number(i.value || 0);
-    if(val > 0){
-      detalle += `• ${i.dataset.ref} → ${val}\n`;
-      total += val;
+  let total=0, detalle="";
+  document.querySelectorAll("[data-ref]").forEach(i=>{
+    if(i.value>0){
+      total+=Number(i.value);
+      detalle+=`• ${i.dataset.ref} → ${i.value}\n`;
     }
   });
 
-  const inventarioTxt =
-    tieneInventario.value === "Sí"
-      ? `Sí (${cantidadInventario.value || 0})`
-      : tieneInventario.value || "-";
-
-  textoResumen.value =
+  textoResumen.value=
 `CONFIRMO INYECCIÓN
-
-Cliente: ${cliente.value || "-"}
-Canal: ${canal.value || "-"}
-Ciudad: ${ciudad.value || "-"}
-Inventario: ${inventarioTxt}
+Cliente: ${cliente.value}
+Canal: ${canal.value}
+Ciudad: ${ciudad.value}
 
 Referencias:
-${detalle || "-"}
+${detalle}
 
-TOTAL UNIDADES: ${total}`;
+TOTAL: ${total}`;
+}
+
+/* ===== GUARDAR ===== */
+formEDC.addEventListener("submit",e=>{
+  e.preventDefault();
+
+  fetch("https://ir.infinityfreeapp.com/guardar.php",{
+    method:"POST",
+    headers:{ "Content-Type":"application/json" },
+body: JSON.stringify({
+  fecha: new Date().toLocaleString(),
+  edc: edc.value,
+  regional: regional.value,
+  canal: canal.value,
+  cliente: cliente.value,
+  ciudad: ciudad.value,
+  direccion: direccion.value,
+  dueno: dueno.value,
+  encargado: encargado.value,
+  telefono: telefono.value,
+  inventario: tieneInventario.value,
+  cantidadInventario: cantidadInventario.value,
+  total: [...document.querySelectorAll("[data-ref]")]
+          .reduce((s,i)=>s + Number(i.value || 0),0),
+  detalle: textoResumen.value
+})
+/* ===== ADMIN ===== */
+async function cargarTablaAdmin(){
+  const data = await (await fetch("https://ir.infinityfreeapp.com/listar.php")).json();
+  tablaAdmin.querySelector("tbody").innerHTML =
+    data.map(r=>`
+      <tr>
+        <td>${r.fecha}</td>
+        <td>${r.edc}</td>
+        <td>${r.cliente}</td>
+        <td>${r.total}</td>
+      </tr>`).join("");
+}
+  async function descargarExcel(){
+  const res = await fetch("https://ir.infinityfreeapp.com/listar.php");
+  const data = await res.json();
+
+  let csv = "Fecha,EDC,Cliente,Total\n";
+  data.forEach(r=>{
+    csv += `"${r.fecha}","${r.edc}","${r.cliente}","${r.total}"\n`;
+  });
+
+  const link = document.createElement("a");
+  link.href = URL.createObjectURL(new Blob([csv], { type: "text/csv" }));
+  link.download = "HONOR_Registros.csv";
+  link.click();
 }
 </script>
 </body>
