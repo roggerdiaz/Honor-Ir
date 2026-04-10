@@ -357,22 +357,21 @@ function actualizarResumen(){
 formEDC.addEventListener("submit",e=>{
   e.preventDefault();
 
-  fetch("http://ir.infinityfreeapp.com/guardar.php",{
-    method:"POST",
-    headers:{ "Content-Type":"application/json" },
-    body:JSON.stringify({
-      fecha:new Date().toLocaleString(),
-      edc:edc.value,
-      regional:regional.value,
-      canal:canal.value,
-      cliente:cliente.value,
-      ciudad:ciudad.value,
-      total:[...document.querySelectorAll("[data-ref]")]
-            .reduce((s,i)=>s+Number(i.value||0),0),
-      detalle:textoResumen.value
-    })
-  }).then(()=>alert("✅ Registro guardado"));
-});
+fetch("http://ir.infinityfreeapp.com/guardar.php",{
+  method:"POST",
+  body: new URLSearchParams({
+    fecha: new Date().toLocaleString(),
+    edc: edc.value,
+    regional: regional.value,
+    canal: canal.value,
+    cliente: cliente.value,
+    ciudad: ciudad.value,
+    total: [...document.querySelectorAll("[data-ref]")]
+              .reduce((s,i)=>s+Number(i.value||0),0),
+    detalle: textoResumen.value
+  })
+})
+.then(()=>alert("✅ Registro guardado"));
 
 /* ADMIN */
 async function cargarTablaAdmin(){
