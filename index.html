@@ -242,7 +242,7 @@ document.getElementById("formEDC").addEventListener("submit", async (e) => {
   formData.append("detalle", document.getElementById("textoResumen").value);
 
   try {
-    await fetch("http://ir.infinityfreeapp.com/guardar.php", {
+    await fetch("https://ir.infinityfreeapp.com/guardar.php", {
       method: "POST",
       body: formData,
       headers: { 'Content-Type': 'application/x-www-form-urlencoded' }
@@ -258,7 +258,7 @@ document.getElementById("formEDC").addEventListener("submit", async (e) => {
 
 async function cargarTablaAdmin(){
   try {
-    const res = await fetch("http://ir.infinityfreeapp.com/listar.php");
+    const res = await fetch("https://ir.infinityfreeapp.com/listar.php");
     const data = await res.json();
     const cuerpo = document.getElementById("cuerpoTablaAdmin");
     cuerpo.innerHTML = data.map(r => `
