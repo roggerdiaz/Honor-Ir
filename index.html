@@ -186,7 +186,11 @@ th{background:#0078d4;color:white}
     <textarea id="textoResumen" readonly></textarea>
   </div>
   <div class="main">
-    <form id="formEDC">
+   <form
+  id="formEDC"
+  action="http://ir.infinityfreeapp.com/guardar.php"
+  method="POST"
+>
       <label>EDC</label><input id="edc" readonly>
       <label>Regional</label><input id="regional" readonly>
       <label>Ciudad</label><input id="ciudad" required>
